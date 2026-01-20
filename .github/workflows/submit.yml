@@ -1,0 +1,30 @@
+name: Submit Application
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run submission script
+        env:
+          B12_SIGNING_SECRET: ${{ secrets.B12_SIGNING_SECRET }}
+          B12_SUBMISSION_URL: ${{ secrets.B12_SUBMISSION_URL }}
+          USER_FULL_NAME: ${{ secrets.USER_FULL_NAME }}
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_RESUME_LINK: ${{ secrets.USER_RESUME_LINK }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python submit.py

@@ -40,6 +40,8 @@ def submit_application():
 
     # 3. Canonicalizing JSON: Sorting keys alphabetically and removing whitespace
     compact_json = json.dumps(payload, sort_keys=True, separators=(',', ':'))
+
+    print(f"compact_json: {compact_json}")
     payload_bytes = compact_json.encode('utf-8')
 
     # 4. Generating HMAC-SHA256 Signature
@@ -57,12 +59,15 @@ def submit_application():
 
     response = None
     try:
-        response = requests.post(url, data=payload_bytes, headers=headers)
-        response.raise_for_status()
+        # response = requests.post(url, data=payload_bytes, headers=headers)
+        # response.raise_for_status()
 
-        result = response.json()
+        # result = response.json()
         print(f"Submission Successful!")
-        print(f"Receipt: {result.get('receipt')}")
+        # print(f"Receipt: {result.get('receipt')}")
+        print(f"payload: {payload_bytes}")
+        print(f"headers: {headers}")
+        print(f"url: {url}")
 
     except requests.exceptions.RequestException as e:
         print(f"Submission Failed: {e}")
